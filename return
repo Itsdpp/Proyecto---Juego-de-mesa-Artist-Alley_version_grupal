@@ -1,0 +1,196 @@
+[1mdiff --git a/src/Artistas.java b/src/Artistas.java[m
+[1mindex 01d181e..243ce36 100644[m
+[1m--- a/src/Artistas.java[m
+[1m+++ b/src/Artistas.java[m
+[36m@@ -2,24 +2,22 @@[m [mimport java.io.BufferedReader;[m
+ import java.io.InputStreamReader;[m
+ import java.io.IOException;[m
+ [m
+[31m-public class Jugadores {[m
+[31m-private String[] cartas = {"1","2","3","4","5","6","7","8","9","10","11","12"};[m
+[31m-// guarda los valores de las cartas en string(tendra su sentido pronto)[m
+[31m-[m
+[31m-private String[] cartasJugadas= new String[cartas.length];[m
+[31m-[m
+[31m-private int puntos = 0;[m
+[32m+[m[32mpublic class Artistas {[m
+[32m+[m[32mprotected String[] cartas = {"1","2","3","4","5","6","7","8","9","10","11","12"};[m
+[32m+[m[32mprotected String[] cartasJugadas= new String[cartas.length];[m
+[32m+[m[32mprotected int puntos = 0;[m
+ private BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));[m
+[32m+[m[32m//protected la mayoria, para que la clase Bots los pueda usar[m
+ [m
+ //primera vez que uso buffered reader, que lee todo directamente en string siempre[m
+ [m
+     public int getPuntos() {[m
+         return puntos;[m
+[31m-    }[m
+[32m+[m[32m    }//para saber cuantos puntos tiene cada jugador[m
+ [m
+     public void setPuntos(int puntos) {[m
+         this.puntos = puntos;[m
+[31m-    }[m
+[32m+[m[32m    }//para acumular los puntos[m
+ [m
+     //Se encarga de toda la verificacion de la carta(si no fue jugada o valores apropiados)[m
+     public int UsarCarta(){[m
+[36m@@ -32,20 +30,22 @@[m [mprivate BufferedReader lector = new BufferedReader(new InputStreamReader(System.[m
+             for (int i = 1; i < cartas.length - 1; i++) {//no revisa el primer elemento ni el ultimo[m
+                 Textos.Escribir(cartas[i] + ",");//genera todo el string excepto el primero y ultimo[m
+             }[m
+[31m-            Textos.EscribirLinea(cartas[cartas.length - 1] + "]");//tuve que revisar para hacer eso[m
+[32m+[m[32m            Textos.EscribirLinea(cartas[cartas.length - 1] + "]");//tuve que revisar para hacer eso, pero resumiendo toma el elemento final[m
+             try {[m
+[31m-                carta = Integer.parseInt(lector.readLine());[m
+[32m+[m[32m                carta = Integer.parseInt(lector.readLine());//convierte el string directamente en un numero int[m
+             } catch (IOException | NumberFormatException e) {//es posible hacer un multi-catch usando |, en estos casos, la e va al final.[m
+                 ver = false;[m
+                 Textos.EscribirLinea("Error de texto invalido, por favor escoja un numero.");[m
+[31m-                throw new RuntimeException(e);[m
+[32m+[m[32m                throw new RuntimeException(e);//envia el error e[m
+             }[m
+[31m-            if (carta > cartas.length - 1 || carta < 0){//me aseguro que se coloque el indice de cartas correcto, si es mayor al indice o menor a 0[m
+[32m+[m[32m            if (carta > cartas.length - 1 || carta <= 0){//me aseguro que se coloque el indice de cartas correcto, si es mayor al indice o menor a 0[m
+                 ver = false;[m
+[31m-            Textos.EscribirLinea("Por favor, escribir un valor valido");[m
+[31m-            continue;//reinicia hasta[m
+[31m-        }[m
+[31m-            else{//si pasa el verificador y los catchs, se comprueba su valor[m
+[32m+[m[32m            Textos.EscribirLinea("Por favor, escribir una carta valida");[m
+[32m+[m[32m            continue;//lo reenvia a colocar un numero valido[m
+[32m+[m
+[32m+[m[32m        }//fin del if[m
+[32m+[m
+[32m+[m[32m            else{//si pasa el verificador y los catchs, se comprueba su valor con el metodo "CartaJugada"[m
+                 boolean repetido = CartaJugada(cartas[carta-1]);//entra el valor cartas[valor de indice][m
+                 //se resta uno, ya que de este forma entra en el indice correcto (1=index 0)[m
+                 //NOTA PERSONAL:[m
+[36m@@ -56,7 +56,7 @@[m [mprivate BufferedReader lector = new BufferedReader(new InputStreamReader(System.[m
+                     Textos.EscribirLinea("Este numero ya lo jugo, porfavor escoja otro");[m
+                     continue;//regresa al inicio[m
+                 }[m
+[31m-                else//FINALMENTE LLEGUE AQUI, WOOOOOO[m
+[32m+[m[32m                else//FINALMENTE LLEGUE AQUI, Y CON 1% DE IA NAMAS PARA INSTRUCCIONES Y FULL LOGICA, WOOOOO[m
+                 {[m
+                     int seleccion= Integer.parseInt(cartas[carta-1]);//coloco el valor en una variable aparte[m
+                     cartas[carta-1]= Textos.tachar(cartas[carta-1]);//se tacha el texto dentro del indice, indicando que fue usada.[m
+[36m@@ -71,12 +71,12 @@[m [mprivate BufferedReader lector = new BufferedReader(new InputStreamReader(System.[m
+     }//fin clase jugar_carta[m
+ [m
+     //se encarga de revisar si la carta fue jugada o no[m
+[31m-    public boolean CartaJugada (String carta){[m
+[31m-        for(int i=0;i<cartas.length;i++){[m
+[32m+[m[32m    protected boolean CartaJugada (String carta){//protected al solo ser usado en la clase bots y esta[m
+[32m+[m[32m        for(int i=0;i<cartas.length-1;i++){//-1 para evitar que el numero pase el limite[m
+             if (cartasJugadas[i].equals(carta)){//el valor de ambas partes es igual,osea, se repitio el numero[m
+                 return true;[m
+             }[m
+         }[m
+[31m-        return false;[m
+[32m+[m[32m        return false;//si la condicion no se cumple, envia false == no numero repetido[m
+     }[m
+ }[m
+[1mdiff --git a/src/Bots.java b/src/Bots.java[m
+[1mindex 20fe4a2..d41350a 100644[m
+[1m--- a/src/Bots.java[m
+[1m+++ b/src/Bots.java[m
+[36m@@ -1,4 +1,21 @@[m
+[31m-package PACKAGE_NAME;[m
+[32m+[m[32mpublic class Bots extends Artistas {//uso herencia considerando que necesito muchas[m
+[32m+[m[32m    // cosas de la clase jugadores?? En resumen, si.[m
+ [m
+[31m-public class Bots {[m
+[31m-}[m
+[32m+[m[32m    //investigue y descubri que se puede realizar una "sobreescitura de metodos"[m
+[32m+[m[32m    //usare eso para editar el metodo "UsarCarta" y aleatorizarlo.[m
+[32m+[m
+[32m+[m[32m    //obtiene una carta aleatoria, la revisa y si es posible, la juega[m
+[32m+[m[32m    @Override//lei que esta es una buena practica, asi que lo coloco[m
+[32m+[m[32m    public int UsarCarta(){[m
+[32m+[m[32m        boolean chequeo=false;[m
+[32m+[m[32m        do {[m
+[32m+[m[32m            String verificador = Integer.toString(Utils.ValorAleatorio(cartas.length, 0));//como quiero cartas.length, en vez de private uso protected en Artistas[m
+[32m+[m[32m            //no se resta 1 para que escoja cualquier valor del indice[m
+[32m+[m[32m            chequeo = CartaJugada(verificador);[m
+[32m+[m[32m        } while(chequeo==false);[m
+[32m+[m[32m        return[m
+[32m+[m[32m    }[m
+[32m+[m[32m//se que se genera una X cantidad de valores hasta encontrar uno valido, pero diria que cumple la funcion y eso me basta de momento[m
+[32m+[m[32m//quizas la proxima vez que chequee esto lo mejore[m
+[32m+[m
+[32m+[m[32m    }[m
+[1mdiff --git a/src/Clientes.java b/src/Clientes.java[m
+[1mindex ddee03f..c88ed9b 100644[m
+[1m--- a/src/Clientes.java[m
+[1m+++ b/src/Clientes.java[m
+[36m@@ -1,5 +1,5 @@[m
+[31m-public class Compradores {[m
+[31m-    int[] cartas ={9,12,15,16,18,20,22,23,24,25,26,30};//arreglo de 12[m
+[32m+[m[32mpublic class Clientes {[m
+[32m+[m[32m    int[] cartas ={9,12,15,16,18,20,22,23,24,25,26,30};//arreglo de 12, de los valores disponibles para los clientes[m
+     int[] compradores= new int[9];//numero maximo de rondas[m
+ [m
+     void CargarCompradores(){[m
+[36m@@ -8,7 +8,7 @@[m [mpublic class Compradores {[m
+         boolean verDupe=false;[m
+         for (int i=0;i<compradores.length;i++){//repetir hasta generar los valores de los compradores[m
+             do{[m
+[31m-                verNum = Utils.ValorAleatorio(12,0);//genera un valor aleatorio entre 0 y 12[m
+[32m+[m[32m                verNum = Utils.ValorAleatorio(cartas.length,0);//genera un valor aleatorio entre 0 y 12[m
+                 verDupe= Utils.VerificadorDobles(verNum,compradores);//se verifica que el numero[m
+             }while(verDupe==false);//mientras el verificador sea false, se repite[m
+             compradores[i]=verNum;//cuando se encuentra un valor, sale del ciclo y se asigna ese valor al indice[m
+[1mdiff --git a/src/ReglasDelJuego.java b/src/ReglasDelJuego.java[m
+[1mindex f340dd1..adeaef8 100644[m
+[1m--- a/src/ReglasDelJuego.java[m
+[1m+++ b/src/ReglasDelJuego.java[m
+[36m@@ -1,18 +1,10 @@[m
+ public class ReglasDelJuego {[m
+[31m-    private Jugadores[] jugadores= new Jugadores[6];//cantidad de jugadores, editable (obviamente)[m
+[32m+[m[32m    private Artistas[] jugadores= new Artistas[3];//cantidad de jugadores, 1 persona y 2 bots[m
+     private int rondas= 0;//con esto se llevaran las rondas del juego[m
+     private int Comprador = 0;//[m
+[32m+[m[32m//fase de inicio del juego, se inicializan valores y esas cosas[m
+[32m+[m[32m    public void InicioJuego(){[m
+ [m
+[31m-    public void GenerarComprador(){[m
+[31m-        if (rondas < 6) {[m
+[31m-            //para explicacion de este segmento en un txt aparte(ojala haber pensado en algo como eso, pero no conocia[m
+[31m-            // la funcion math.floor)[m
+[31m-            Comprador = (int) (Math.floor(Math.random() * ((35) - (10) + 1)) + (10));//obligatorio usar int, aunque floor[m
+[31m-            // evite decimales[m
+[31m-            rondas = rondas + 1;//lo ultimo que se debe hacer en cada turno[m
+[31m-        } else {[m
+[31m-            //metodo fin del juego ingresado aqui[m
+[31m-        }[m
+     }[m
+     private void FinDelJuego(){[m
+ [m
+[1mdiff --git a/src/Utils.java b/src/Utils.java[m
+[1mindex 78d06b2..412447a 100644[m
+[1m--- a/src/Utils.java[m
+[1m+++ b/src/Utils.java[m
+[36m@@ -1,4 +1,20 @@[m
+[31m-package PACKAGE_NAME;[m
+[31m-[m
+ public class Utils {[m
+[31m-}[m
+[32m+[m[32m    public static int ValorAleatorio(int max, int min){//editar para que sea general[m
+[32m+[m[32m                //para explicacion de este segmento en un txt aparte(ojala haber pensado en algo como eso, pero no conocia[m
+[32m+[m[32m                // la funcion math.floor)[m
+[32m+[m[32m                return (int) (Math.floor(Math.random() * ((max) - (min) + 1)) + (min));//obligatorio usar int, aunque floor[m
+[32m+[m[32m                // evite decimales[m
+[32m+[m[32m            }[m
+[32m+[m[32m    public static boolean VerificadorDobles(int verNum, int[] ar){//ar=arreglo[m
+[32m+[m[32m        for (int i = 0; i<ar.length; i++){[m
+[32m+[m[32m            if (ar[i]==verNum)//condicional= si el valor que se almacena en ese indice es igual al valor de verNum, se envia true==hay un duplicado[m
+[32m+[m[32m                return true;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        return false;[m
+[32m+[m[32m    }[m
+[32m+[m[32m    public static void InicializarArreglo(int[]arreglo){//se asegura que el arreglo no tenga valores aleatorios y todo comienzen en 0[m
+[32m+[m[32m        for (int i=0;i<arreglo.length;i++){[m
+[32m+[m[32m            arreglo[i]=0;[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m    }[m

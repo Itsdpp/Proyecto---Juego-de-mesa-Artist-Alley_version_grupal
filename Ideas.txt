@@ -1,7 +1,0 @@
-Ideas de cosas para añadir
-1. Bots (en caso de jugar solo, o con 1 persona mas)
-2. Tiempo para escoger una carta(si no se escoge una en ese tiempo, se usara un random para escoger hasta que salga 1 valida)
-3. Posibilidad de jugar una cantidad de rondas especifica
-4. añadir un modo de juego en el cual los compradores tengan las habilidades/caracteristicas especiales
-5. Evitar que se repitan compradores
-6. Que el juego se pueda repetir(despues de terminar un juego, que se pueda volver a jugar otro)

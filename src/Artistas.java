@@ -2,25 +2,22 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-public class Jugadores {
-private String[] cartas = {"1","2","3","4","5","6","7","8","9","10","11","12"};
-// guarda los valores de las cartas en string(tendra su sentido pronto)
-
-private String[] cartasJugadas= new String[cartas.length];
-//LET ME COOK
-
-private int puntos = 0;
+public class Artistas {
+protected String[] cartas = {"1","2","3","4","5","6","7","8","9","10","11","12"};
+protected String[] cartasJugadas= new String[cartas.length];
+protected int puntos = 0;
 private BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
+//protected la mayoria, para que la clase Bots los pueda usar
 
 //primera vez que uso buffered reader, que lee todo directamente en string siempre
 
     public int getPuntos() {
         return puntos;
-    }
+    }//para saber cuantos puntos tiene cada jugador
 
     public void setPuntos(int puntos) {
         this.puntos = puntos;
-    }
+    }//para acumular los puntos
 
     //Se encarga de toda la verificacion de la carta(si no fue jugada o valores apropiados)
     public int UsarCarta(){
@@ -33,20 +30,22 @@ private BufferedReader lector = new BufferedReader(new InputStreamReader(System.
             for (int i = 1; i < cartas.length - 1; i++) {//no revisa el primer elemento ni el ultimo
                 Textos.Escribir(cartas[i] + ",");//genera todo el string excepto el primero y ultimo
             }
-            Textos.EscribirLinea(cartas[cartas.length - 1] + "]");//tuve que revisar para hacer eso
+            Textos.EscribirLinea(cartas[cartas.length - 1] + "]");//tuve que revisar para hacer eso, pero resumiendo toma el elemento final
             try {
-                carta = Integer.parseInt(lector.readLine());
+                carta = Integer.parseInt(lector.readLine());//convierte el string directamente en un numero int
             } catch (IOException | NumberFormatException e) {//es posible hacer un multi-catch usando |, en estos casos, la e va al final.
                 ver = false;
                 Textos.EscribirLinea("Error de texto invalido, por favor escoja un numero.");
-                throw new RuntimeException(e);
+                throw new RuntimeException(e);//envia el error e
             }
-            if (carta > cartas.length - 1 || carta < 0){//me aseguro que se coloque el indice de cartas correcto, si es mayor al indice o menor a 0
+            if (carta > cartas.length - 1 || carta <= 0){//me aseguro que se coloque el indice de cartas correcto, si es mayor al indice o menor a 0
                 ver = false;
-            Textos.EscribirLinea("Por favor, escribir un valor valido");
-            continue;//reinicia hasta
-        }
-            else{//si pasa el verificador y los catchs, se comprueba su valor
+            Textos.EscribirLinea("Por favor, escribir una carta valida");
+            continue;//lo reenvia a colocar un numero valido
+
+        }//fin del if
+
+            else{//si pasa el verificador y los catchs, se comprueba su valor con el metodo "CartaJugada"
                 boolean repetido = CartaJugada(cartas[carta-1]);//entra el valor cartas[valor de indice]
                 //se resta uno, ya que de este forma entra en el indice correcto (1=index 0)
                 //NOTA PERSONAL:
@@ -57,7 +56,7 @@ private BufferedReader lector = new BufferedReader(new InputStreamReader(System.
                     Textos.EscribirLinea("Este numero ya lo jugo, porfavor escoja otro");
                     continue;//regresa al inicio
                 }
-                else//FINALMENTE LLEGUE AQUI, WOOOOOO
+                else//FINALMENTE LLEGUE AQUI, Y CON 1% DE IA NAMAS PARA INSTRUCCIONES Y FULL LOGICA, WOOOOO
                 {
                     int seleccion= Integer.parseInt(cartas[carta-1]);//coloco el valor en una variable aparte
                     cartas[carta-1]= Textos.tachar(cartas[carta-1]);//se tacha el texto dentro del indice, indicando que fue usada.
@@ -72,12 +71,12 @@ private BufferedReader lector = new BufferedReader(new InputStreamReader(System.
     }//fin clase jugar_carta
 
     //se encarga de revisar si la carta fue jugada o no
-    public boolean CartaJugada (String carta){
-        for(int i=0;i<cartas.length;i++){
+    protected boolean CartaJugada (String carta){//protected al solo ser usado en la clase bots y esta
+        for(int i=0;i<cartas.length-1;i++){//-1 para evitar que el numero pase el limite
             if (cartasJugadas[i].equals(carta)){//el valor de ambas partes es igual,osea, se repitio el numero
                 return true;
             }
         }
-        return false;
+        return false;//si la condicion no se cumple, envia false == no numero repetido
     }
 }
