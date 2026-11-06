@@ -1,4 +1,4 @@
-public class Bots extends Artistas{//uso herencia considerando que necesito muchas
+public class Bots extends Artistas {//uso herencia considerando que necesito muchas
     // cosas de la clase jugadores?? En resumen, si.
 
     //investigue y descubri que se puede realizar una "sobreescitura de metodos"
@@ -6,12 +6,11 @@ public class Bots extends Artistas{//uso herencia considerando que necesito much
 
     //obtiene una carta aleatoria, la revisa y si es posible, la juega
     @Override//lei que esta es una buena practica, asi que lo coloco
-    public int UsarCarta(){
-        boolean chequeo=false;
+    public int UsarCarta() {
+        boolean chequeo = false;
         int carta = 0;
         do {
-            carta = Utils.ValorAleatorio(cartas.length, 1);//como quiero cartas.length, en vez de private uso protected en Artistas
-            //no se resta 1 para que escoja cualquier valor del indice
+            carta = Utils.ValorAleatorio(cartas.length, 1);//genera un valor de 1 a 12
             chequeo = CartaJugada(Integer.toString(carta));
         } while (chequeo == true); //si la carta ya fue jugada, se repite el ciclo hasta que se encuentre una carta valida
 
