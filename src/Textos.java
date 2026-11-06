@@ -52,17 +52,22 @@ public class Textos {
         return "[" + "#".repeat(llenos) + "-".repeat(largo - llenos) + "] " + actual + "/" + max;
     }
 
-    // espera a que el jugador presione Enter
+    // espera a que el jugador presione Enter, si escribe EXIT lanza SalirException
     public static void Pausa(String mensaje) {
-        System.out.println();
-        System.out.print(GRIS + mensaje + RESET);
-        try {
-            int c;
-            do {
-                c = System.in.read();
-            } while (c != '\n' && c != -1);
-        } catch (IOException e) {
-            // no pasa nada, sigue el juego
+    System.out.println();
+    System.out.print(GRIS + mensaje + " (EXIT para salir)" + RESET);
+    StringBuilder linea = new StringBuilder();
+    try {
+        int c = System.in.read();
+        while (c != '\n' && c != -1) {
+            linea.append((char) c);
+            c = System.in.read();
+        }
+    } catch (IOException e) {
+        // no pasa nada, sigue el juego
+    }
+    if (linea.toString().trim().equalsIgnoreCase("EXIT")) {
+        throw new SalirException();
         }
     }
 }
