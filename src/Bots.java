@@ -1,4 +1,4 @@
-public class Bots extends Artistas {//uso herencia considerando que necesito muchas
+public class Bots extends Artistas{//uso herencia considerando que necesito muchas
     // cosas de la clase jugadores?? En resumen, si.
 
     //investigue y descubri que se puede realizar una "sobreescitura de metodos"
@@ -8,14 +8,15 @@ public class Bots extends Artistas {//uso herencia considerando que necesito muc
     @Override//lei que esta es una buena practica, asi que lo coloco
     public int UsarCarta(){
         boolean chequeo=false;
+        int carta = 0;
         do {
-            String verificador = Integer.toString(Utils.ValorAleatorio(cartas.length, 0));//como quiero cartas.length, en vez de private uso protected en Artistas
+            carta = Utils.ValorAleatorio(cartas.length, 1);//como quiero cartas.length, en vez de private uso protected en Artistas
             //no se resta 1 para que escoja cualquier valor del indice
-            chequeo = CartaJugada(verificador);
-        } while(chequeo==false);
-        return
-    }
-//se que se genera una X cantidad de valores hasta encontrar uno valido, pero diria que cumple la funcion y eso me basta de momento
-//quizas la proxima vez que chequee esto lo mejore
+            chequeo = CartaJugada(Integer.toString(carta));
+        } while (chequeo == true); //si la carta ya fue jugada, se repite el ciclo hasta que se encuentre una carta valida
 
+        cartasJugadas[carta - 1] = Integer.toString(carta); //marca la carta como jugada, se resta 1 para que entre en el indice correcto
+        cartas[carta - 1] = Textos.tachar(cartas[carta - 1]);
+        return carta;
     }
+}

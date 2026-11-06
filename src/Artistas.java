@@ -1,6 +1,6 @@
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Artistas {
 protected String[] cartas = {"1","2","3","4","5","6","7","8","9","10","11","12"};
@@ -32,13 +32,14 @@ private BufferedReader lector = new BufferedReader(new InputStreamReader(System.
             }
             Textos.EscribirLinea(cartas[cartas.length - 1] + "]");//tuve que revisar para hacer eso, pero resumiendo toma el elemento final
             try {
+                Textos.Escribir(Textos.AMARILLO + "> " + Textos.RESET);
                 carta = Integer.parseInt(lector.readLine());//convierte el string directamente en un numero int
             } catch (IOException | NumberFormatException e) {//es posible hacer un multi-catch usando |, en estos casos, la e va al final.
                 ver = false;
                 Textos.EscribirLinea("Error de texto invalido, por favor escoja un numero.");
-                throw new RuntimeException(e);//envia el error e
+                continue;//lo reenvia a colocar un numero valido
             }
-            if (carta > cartas.length - 1 || carta <= 0){//me aseguro que se coloque el indice de cartas correcto, si es mayor al indice o menor a 0
+            if (carta > cartas.length || carta <= 0){//me aseguro que se coloque el indice de cartas correcto, si es mayor al indice o menor a 0
                 ver = false;
             Textos.EscribirLinea("Por favor, escribir una carta valida");
             continue;//lo reenvia a colocar un numero valido
@@ -46,21 +47,22 @@ private BufferedReader lector = new BufferedReader(new InputStreamReader(System.
         }//fin del if
 
             else{//si pasa el verificador y los catchs, se comprueba su valor con el metodo "CartaJugada"
-                boolean repetido = CartaJugada(cartas[carta-1]);//entra el valor cartas[valor de indice]
+                boolean repetido = CartaJugada(String.valueOf(carta));//entra el valor cartas[valor de indice]
                 //se resta uno, ya que de este forma entra en el indice correcto (1=index 0)
                 //NOTA PERSONAL:
                 // pensaba que debia ser un string[], pero como solo entra un valor de indice x
                 //es string solamente.
 
                 if (repetido==true){
+                    ver = false;
                     Textos.EscribirLinea("Este numero ya lo jugo, porfavor escoja otro");
                     continue;//regresa al inicio
                 }
                 else//FINALMENTE LLEGUE AQUI, Y CON 1% DE IA NAMAS PARA INSTRUCCIONES Y FULL LOGICA, WOOOOO
                 {
-                    int seleccion= Integer.parseInt(cartas[carta-1]);//coloco el valor en una variable aparte
-                    cartas[carta-1]= Textos.tachar(cartas[carta-1]);//se tacha el texto dentro del indice, indicando que fue usada.
-                 return seleccion;
+                    cartasJugadas[carta - 1] = String.valueOf(carta);//coloco el valor en una variable aparte
+                    cartas[carta - 1] = Textos.tachar(cartas[carta - 1]);//se tacha el texto dentro del indice, indicando que fue usada.
+                 return carta;
                 }
             }
 
@@ -72,11 +74,12 @@ private BufferedReader lector = new BufferedReader(new InputStreamReader(System.
 
     //se encarga de revisar si la carta fue jugada o no
     protected boolean CartaJugada (String carta){//protected al solo ser usado en la clase bots y esta
-        for(int i=0;i<cartas.length-1;i++){//-1 para evitar que el numero pase el limite
-            if (cartasJugadas[i].equals(carta)){//el valor de ambas partes es igual,osea, se repitio el numero
+        for (int i = 0; i < cartasJugadas.length; i++) {//revisa la ultima carta jugada, si es igual a la carta que se quiere jugar, envia true == numero repetido
+            if (carta.equals(cartasJugadas[i])) {
                 return true;
             }
         }
+
         return false;//si la condicion no se cumple, envia false == no numero repetido
     }
 }
