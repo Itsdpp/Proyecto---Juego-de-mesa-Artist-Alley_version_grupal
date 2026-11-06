@@ -8,12 +8,13 @@ public class Bots extends Artistas {//uso herencia considerando que necesito muc
     @Override//lei que esta es una buena practica, asi que lo coloco
     public int UsarCarta(){
         boolean chequeo=false;
+        String verificador;
         do {
-            String verificador = Integer.toString(Utils.ValorAleatorio(cartas.length, 0));//como quiero cartas.length, en vez de private uso protected en Artistas
+            verificador= Integer.toString(Utils.ValorAleatorio(cartas.length, 0));//como quiero cartas.length, en vez de private uso protected en Artistas
             //no se resta 1 para que escoja cualquier valor del indice
-            chequeo = CartaJugada(verificador);
+            chequeo = CartaJugada(verificador);//debo convertirlo, debido a que el metodo CartaJugada usa un String
         } while(chequeo==false);
-        return
+        return Integer.parseInt(verificador);//envio el valor convertido como indice
     }
 //se que se genera una X cantidad de valores hasta encontrar uno valido, pero diria que cumple la funcion y eso me basta de momento
 //quizas la proxima vez que chequee esto lo mejore
